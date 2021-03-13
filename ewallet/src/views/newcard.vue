@@ -7,13 +7,14 @@
     </header>
 
     <main>
-      <section class="inputcard">
+      <Card :card="card" />
+      <!-- <section class="inputcard">
         <section class="card" style="background-color: rgb(213, 213, 213)">
           <div class="Top">
             <img src="../assets/chip-light.svg" alt="chip" />
             <img src="../assets/vendor-bitcoin.svg" alt="logo" />
           </div>
-
+          
           <div class="Middle">
             <h2>XXXX XXXX XXXX XXXX</h2>
           </div>
@@ -29,13 +30,13 @@
             </div>
           </div>
         </section>
-      </section>
+      </section> -->
 
       <section class="inputform">
         <form class="primecard" @submit.prevent="primecard" ref="form">
-          
           <label for="cardnumber">CARD NUMBER</label>
           <input
+            v-model="card.number"
             type="text"
             name="cardnumber"
             placeholder="XXXX XXXX XXXX XXXX"
@@ -46,6 +47,7 @@
 
           <label for="ownersname">CARDHOLDER NAME</label>
           <input
+            v-model="card.owner"
             type="text"
             name="ownersname"
             placeholder="NAME"
@@ -57,12 +59,14 @@
               <label for="valid" class="val2">VALID</label>
               <div class="expire">
                 <input
+                  v-model="card.vMonth"
                   type="text"
                   name="vmonth"
                   placeholder="MM"
                   class="valid"
                 />
                 <input
+                  v-model="card.vDay"
                   type="text"
                   name="vyear"
                   placeholder="YY"
@@ -74,12 +78,18 @@
             <div class="cvc">
               <label for="cvc" class="lcvc">CVC</label>
               <div class="newcvc">
-                <input type="text" name="cvc" placeholder="XXX" class="valid" />
+                <input
+                  v-model="card.cvc"
+                  type="text"
+                  name="cvc"
+                  placeholder="XXX"
+                  class="valid"
+                />
               </div>
             </div>
           </div>
 
-          <select name="vendor">
+          <select v-model="card.image" name="vendor">
             <option value="bitcoin">Bitcoin</option>
             <option value="ninja">Ninja</option>
             <option value="blockchain">Blockchain</option>
@@ -94,13 +104,14 @@
 </template>
 
 <script>
+import card from "./../components/card";
 export default {
   data() {
     return {
       card: {
-        image: "",
-        color: "",
-        backgroundcolor: "",
+        image: "bitcoin",
+        color: "white",
+        backgroundcolor: "grey",
         owner: "",
         vendor: "",
         number: "",
@@ -110,14 +121,14 @@ export default {
     };
   },
 
+  components: {
+    Card: card,
+  },
+
   methods: {
     primecard() {
       this.card.color = "#ffffff";
-      this.card.vDay = this.$refs.form.vyear.value;
-      this.card.cvc = this.$refs.form.cvc.value;
-      this.card.vendor = this.$refs.form.vendor.value;
-      this.card.number = this.$refs.form.cardnumber.value;
-      this.card.owner = this.$refs.form.ownersname.value;
+
       this.card.vMonth = this.$refs.form.vmonth.value;
 
       if (this.$refs.form.vendor.value == "bitcoin") {
